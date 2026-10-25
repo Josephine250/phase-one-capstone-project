@@ -1,27 +1,20 @@
-let favoriteBook = [];
-export function addFavorite(title,author,date){
-        const newBook = {title:title,author:author,date:date}
-        favoriteBook.push(newBook);
-        console.log(`successfuly adding book :${title}`);
+// favorite.js
+let favoriteBook = JSON.parse(localStorage.getItem('booksData')) || [];
 
+export function addFavorite(title, author, date) {
+    const newBook = { Title: title, Author: author, Date: date };
+    favoriteBook.push(newBook);
+    
+    localStorage.setItem('booksData', JSON.stringify(favoriteBook));
+    console.log(`Successfully saved "${title}" to localStorage!`);
 }
-export function removeFavorite(title){
-        favoriteBook=favoriteBook.filter(book =>book.title !==title);
-        console.log(`removed book:"${title}"`);
-        console.log("current list after removal:",favoriteBook);
 
+export function removeFavorite(titleToRemove) {
+    favoriteBook = favoriteBook.filter(book => book.Title !== titleToRemove);
+    localStorage.setItem('booksData', JSON.stringify(favoriteBook));
+    console.log(`Removed "${titleToRemove}" from localStorage.`);
 }
- 
-export function getFavorites(){
-        return favoriteBook;
 
-
+export function getFavorites() {
+    return favoriteBook;
 }
-console.log("starting add books in our array");
-addFavorite("physics","jackison","21/act/2000");
-addFavorite("mathematics","jems mathyo",1987);
-
-console.log(getFavorites());
-removeFavorite("physics");
-console.log("List after removing:", getFavorites());
-console.log("--- TEST FINISHED ---");
