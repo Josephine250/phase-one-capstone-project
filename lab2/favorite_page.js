@@ -1,4 +1,4 @@
-// Favorites page (favorites.html): shows the books saved from the home page
+
 import { getFavorites, removeFavorite, importFromUrl } from './favorite.js';
 import { render } from './render.js';
  
@@ -16,7 +16,7 @@ document.getElementById('app').addEventListener('click', (e) => {
   render(state);
 });
  
-// Refresh when coming back with the Back button or when another tab changes favorites
+// Refresh when coming back  or when another tab changes favorites
 function refresh() {
   state.favorites = getFavorites();
   render(state);

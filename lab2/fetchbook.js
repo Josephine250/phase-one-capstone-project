@@ -1,4 +1,4 @@
-// Lab 3.1 – API module (fetch + async/await)
+
 export async function fetchBooks(title) {
   const url = `https://openlibrary.org/search.json?title=${encodeURIComponent(title)}&limit=20&fields=key,title,author_name,cover_i,first_publish_year`;
   const res = await fetch(url);

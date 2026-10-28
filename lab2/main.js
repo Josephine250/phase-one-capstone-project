@@ -17,7 +17,7 @@ function update(changes) {
   render(state);
 }
  
-// Lab 3.2 / 3.3 – load books from the API
+// load books from the API
 let latest = 0; // ignore slow, outdated responses
 async function load(query) {
   const id = ++latest;

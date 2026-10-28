@@ -1,4 +1,4 @@
-// Lab 2.2 + 2.4 – favorites module, persisted in localStorage
+
 const KEY = 'favorites';
  
 export function getFavorites() {
