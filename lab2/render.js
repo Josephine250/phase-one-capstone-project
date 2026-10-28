@@ -37,7 +37,7 @@ export function renderNavbar(page, favs = []) {
  
 function renderHero(query) {
   return `
-    <section class="relative text-white rounded-2xl p-6 md:p-12 mb-8 shadow-md overflow-hidden bg-blue-950 bg-cover bg-center"
+    <section class=" hover:scale-105 transition-transform duration-1000 ease-in-out h-90 relative text-white rounded-2xl p-6 md:p-12 mb-8 shadow-md overflow-hidden bg-blue-950 bg-cover bg-center"
       style="background-image: url('https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&w=1600&q=80')">
       <div class="absolute inset-0 bg-blue-950/70"></div>
       <div class="relative">
