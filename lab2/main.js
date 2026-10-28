@@ -1,9 +1,11 @@
-
 import { fetchBooks } from './fetchbook.js';
-import { getFavorites, addFavorite, removeFavorite } from './favorite.js';
+import { getFavorites, addFavorite, removeFavorite, importFromUrl } from './favorite.js';
 import { render } from './render.js';
  
+importFromUrl(); // favorites sent from the Favorites page
+ 
 const state = {
+  page: 'home',
   query: 'javascript',
   status: 'loading', // loading | success | error
   books: [],
@@ -16,12 +18,16 @@ function update(changes) {
 }
  
 // Lab 3.2 / 3.3 – load books from the API
+let latest = 0; // ignore slow, outdated responses
 async function load(query) {
+  const id = ++latest;
   update({ query, status: 'loading' });
   try {
-    update({ books: await fetchBooks(query), status: 'success' });
-  } catch {
-    update({ status: 'error' });
+    const books = await fetchBooks(query);
+    if (id === latest) update({ books, status: 'success' });
+  } catch (err) {
+    console.error('Search failed:', err);
+    if (id === latest) update({ status: 'error' });
   }
 }
  
@@ -45,6 +51,5 @@ app.addEventListener('click', (e) => {
   const book = [...state.books, ...state.favorites].find((b) => b.key === key);
   update({ favorites: isFav ? removeFavorite(key) : addFavorite(book) });
 });
- 
  
 load(state.query);

@@ -1,24 +1,4 @@
-// // favorite.js
-// let favoriteBook = JSON.parse(localStorage.getItem('booksData')) || [];
-
-// export function addFavorite(title, author, date) {
-//     const newBook = { Title: title, Author: author, Date: date };
-//     favoriteBook.push(newBook);
-    
-//     localStorage.setItem('booksData', JSON.stringify(favoriteBook));
-//     console.log(`Successfully saved "${title}" to localStorage!`);
-// }
-
-// export function removeFavorite(titleToRemove) {
-//     favoriteBook = favoriteBook.filter(book => book.Title !== titleToRemove);
-//     localStorage.setItem('booksData', JSON.stringify(favoriteBook));
-//     console.log(`Removed "${titleToRemove}" from localStorage.`);
-// }
-
-// export function getFavorites() {
-//     return favoriteBook;
-// }
-
+// Lab 2.2 + 2.4 – favorites module, persisted in localStorage
 const KEY = 'favorites';
  
 export function getFavorites() {
@@ -42,4 +22,12 @@ export function removeFavorite(key) {
  
 export function isFavorite(key) {
   return getFavorites().some((b) => b.key === key);
+}
+ 
+// Receive favorites sent through the link (#fav=...) and store them in this page's localStorage.
+// This keeps both pages in sync even when the browser stores them separately per address.
+export function importFromUrl() {
+  if (!location.hash.startsWith('#fav=')) return;
+  try { save(JSON.parse(decodeURIComponent(location.hash.slice(5)))); } catch { /* ignore bad data */ }
+  history.replaceState(null, '', location.pathname + location.search);
 }
