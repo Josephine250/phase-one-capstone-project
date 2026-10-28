@@ -8,7 +8,7 @@ const state = { page: 'favorites', favorites: getFavorites() };
  
 render(state);
  
-// Remove button
+
 document.getElementById('app').addEventListener('click', (e) => {
   const btn = e.target.closest('[data-fav]');
   if (!btn) return;
