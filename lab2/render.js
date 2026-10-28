@@ -16,7 +16,7 @@ export function render(state) {
   `;
 }
  
-// Lab 1.1 – navbar, hero, footer
+// navbar, hero, footer
 export function renderNavbar(page, favs = []) {
   const count = favs.length;
   // The saved books travel with the link, so the next page always receives them
@@ -62,7 +62,7 @@ function renderFavorites(favs) {
            <a href="index.html" class="text-blue-700 underline">Find a book to save</a>.</p>`}`;
 }
  
-// Lab 3.4 – loading / error  and empty 
+//  loading / error  and empty 
 function renderResults(state) {
   if (state.status === 'loading') {
     return `<div class="flex justify-center py-16">
@@ -81,7 +81,7 @@ function renderResults(state) {
   return renderGrid(state.books, state.favorites);
 }
  
-// Lab 1.2 / 1.3 – responsive grid: 
+//  responsive grid: 
 export function renderGrid(books, favorites) {
   return `<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
     ${books.map((b) => renderCard(b, favorites.some((f) => f.key === b.key))).join('')}

@@ -1,5 +1,5 @@
 
-const KEY = 'favorites';
+const KEY = ' My favorites';
  
 export function getFavorites() {
   try { return JSON.parse(localStorage.getItem(KEY)) || []; }
@@ -24,8 +24,8 @@ export function isFavorite(key) {
   return getFavorites().some((b) => b.key === key);
 }
  
-// Receive favorites sent through the link (#fav=...) and store them in this page's localStorage.
-// This keeps both pages in sync even when the browser stores them separately per address.
+// Receive favorites sent through the link 
+// This keeps both pages 
 export function importFromUrl() {
   if (!location.hash.startsWith('#fav=')) return;
   try { save(JSON.parse(decodeURIComponent(location.hash.slice(5)))); } catch { /* ignore bad data */ }

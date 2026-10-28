@@ -21,5 +21,6 @@ function refresh() {
   state.favorites = getFavorites();
   render(state);
 }
+// this an event to this page once there is refresh
 window.addEventListener('pageshow', refresh);
 window.addEventListener('storage', refresh);

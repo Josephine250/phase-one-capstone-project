@@ -33,7 +33,7 @@ async function load(query) {
  
 const app = document.getElementById('app');
  
-// Lab 2.3 – DOM events (delegated, so they survive re-renders)
+// DOM events (delegated, so they survive re-renders)
 app.addEventListener('submit', (e) => {
   if (e.target.id !== 'search-form') return;
   e.preventDefault();
