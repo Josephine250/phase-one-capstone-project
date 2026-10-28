@@ -6,25 +6,30 @@ const esc = (s) => String(s ?? '').replace(/[&<>"']/g,
  
 export function render(state) {
   app.innerHTML = `
-    ${renderNavbar(state.view)}
+    ${renderNavbar(state.page, state.favorites)}
     <main class="max-w-6xl mx-auto p-4 md:p-6 min-h-screen">
-      ${state.view === 'favorites' ? renderFavorites(state) : renderHome(state)}
+      ${state.page === 'favorites'
+        ? renderFavorites(state.favorites)
+        : renderHero(state.query) + renderResults(state)}
     </main>
     ${renderFooter()}
   `;
 }
  
 // Lab 1.1 – navbar, hero, footer
-function renderNavbar(view) {
-  const link = (href, label, active) =>
-    `<a href="${href}" class="px-3 py-1 rounded ${active ? 'bg-amber-500 text-blue-950' : 'hover:bg-blue-800'}">${label}</a>`;
+export function renderNavbar(page, favs = []) {
+  const count = favs.length;
+  // The saved books travel with the link, so the next page always receives them
+  const data = '#fav=' + encodeURIComponent(JSON.stringify(favs));
+  const link = (href, label, key) =>
+    `<a href="${href}" class="px-3 py-1 rounded ${page === key ? 'bg-amber-500 text-blue-950' : 'hover:bg-blue-800'}">${label}</a>`;
   return `
     <nav class="bg-blue-950 text-white shadow-md border-b-4 border-amber-500">
       <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
         <h1 class="text-xl md:text-2xl font-bold">Book Explorer</h1>
         <div class="flex gap-2 text-sm font-medium">
-          ${link('#home', 'Home', view === 'home')}
-          ${link('favorite.html', 'Favorites', view === 'favorites')}
+          ${link('index.html' + data, 'Home', 'home')}
+          ${link('favorite.html' + data, `Favorites <span id="fav-count" class="ml-1 rounded-full bg-white text-blue-950 px-2 text-xs font-bold ${count ? '' : 'hidden'}">${count}</span>`, 'favorites')}
         </div>
       </div>
     </nav>`;
@@ -40,15 +45,21 @@ function renderHero(query) {
       <p class="text-blue-100 mb-6">Search the Open Library by title.</p>
       <form id="search-form" class="flex flex-col sm:flex-row gap-2 max-w-xl">
         <input name="q" type="search" value="${esc(query)}" placeholder="Search books by title..."
-          class="flex-1 rounded px-4 py-2 text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-300" />
+          class="flex-1 rounded bg-white border border-gray-300 px-4 py-2 text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-amber-400" />
         <button class="bg-amber-500 hover:bg-amber-400 text-blue-950 rounded px-6 py-2 font-semibold">Search</button>
       </form>
       </div>
     </section>`;
 }
  
-function renderHome(state) {
-  return renderHero(state.query) + renderResults(state);
+// Favorites page: every saved book, each with a Remove button
+function renderFavorites(favs) {
+  return `
+    <h2 class="text-3xl font-extrabold text-blue-950 mb-6">Your saved books</h2>
+    ${favs.length
+      ? renderGrid(favs, favs)
+      : `<p class="text-center text-gray-500 py-16">No favorites yet.
+           <a href="index.html" class="text-blue-700 underline">Find a book to save</a>.</p>`}`;
 }
  
 // Lab 3.4 – loading / error / empty states
@@ -70,22 +81,14 @@ function renderResults(state) {
   return renderGrid(state.books, state.favorites);
 }
  
-function renderFavorites(state) {
-  return `
-    <h2 class="text-2xl font-bold mb-6">Your favorites</h2>
-    ${state.favorites.length
-      ? renderGrid(state.favorites, state.favorites)
-      : `<p class="text-center text-gray-500 py-16">No favorites yet. Add some from the Home page.</p>`}`;
-}
- 
 // Lab 1.2 / 1.3 – responsive grid: 1 col mobile, 2 tablet, 3-4 desktop
-function renderGrid(books, favorites) {
+export function renderGrid(books, favorites) {
   return `<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
     ${books.map((b) => renderCard(b, favorites.some((f) => f.key === b.key))).join('')}
   </div>`;
 }
  
-function renderCard(book, isFav) {
+export function renderCard(book, isFav) {
   return `
     <article class="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden flex flex-col">
       <div class="h-48 bg-gray-100 flex items-center justify-center">
@@ -107,7 +110,7 @@ function renderCard(book, isFav) {
     </article>`;
 }
  
-function renderFooter() {
+export function renderFooter() {
   return `<footer class="bg-gray-900 text-gray-400 py-8 text-center text-sm">
     Book Explorer · Data from Open Library
   </footer>`;
