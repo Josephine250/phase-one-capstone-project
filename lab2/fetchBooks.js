@@ -5,7 +5,8 @@ export async function fetchBooks(title) {
   if (!res.ok) throw new Error(`Request failed (${res.status})`);
   const data = await res.json();
  
-  // Keep only the fields the app needs required 
+  // Keep only the fields for app
+   
   return data.docs.map((d) => ({
     key: d.key,
     title: d.title,

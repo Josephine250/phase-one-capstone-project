@@ -1,4 +1,5 @@
-import { fetchBooks } from './fetchbook.js';
+
+import { fetchBooks } from './fetchBooks.js';
 import { getFavorites, addFavorite, removeFavorite, importFromUrl } from './favorite.js';
 import { render } from './render.js';
  
@@ -17,7 +18,7 @@ function update(changes) {
   render(state);
 }
  
-// load books from the API
+// Lab 3.2 / 3.3 – load books from the API
 let latest = 0; // ignore slow, outdated responses
 async function load(query) {
   const id = ++latest;
@@ -33,7 +34,7 @@ async function load(query) {
  
 const app = document.getElementById('app');
  
-// DOM events (delegated, so they survive re-renders)
+// Lab 2.3 – DOM events (delegated, so they survive re-renders)
 app.addEventListener('submit', (e) => {
   if (e.target.id !== 'search-form') return;
   e.preventDefault();
